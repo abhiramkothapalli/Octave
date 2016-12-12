@@ -6,12 +6,13 @@ import math
 import numpy
 from numpy.random import choice
 import pyaudio
-from threading import Thread
+import sys
 
 notes = {}
 #western scale
-'''
-marnotes[0] = 260.00 #261.63 #C
+
+
+notes[0] = 260.00 #261.63 #C
 notes[1] = 290.00 #293.66 #D
 notes[2] = 330.00 #329.63 #E
 notes[3] = 350.00 #349.23 #F
@@ -19,7 +20,8 @@ notes[4] = 390.00 #392.00 #G
 notes[5] = 440.00 #440.00 #A
 notes[6] = 490.00 #493.88 #B
 notes[7] = 520.00 #523.25 #C
-'''
+notes[8] = 0.00 #pause
+
 
 
 #pentatonic scale
@@ -30,6 +32,7 @@ notes[2] = 370.00#F#
 notes[3] = 390.00#G
 notes[4] = 490.00#B
 notes[5] = 520.00#C
+notes[6] = 0.00 #pause
 '''
 '''
 notes[6] = 660.00#E
@@ -50,17 +53,19 @@ def sine(frequency, length, rate):
     return numpy.sin(numpy.arange(length) * factor)
 
 #rate=44100
-def play_tone(frequency, stream=stream, length=0.30, rate=44100):
+def play_tone(frequency, stream=stream, length=0.3, rate=44100):
     chunks = []
     chunks.append(sine(frequency, length, rate))
     chunk = numpy.concatenate(chunks) * 0.25
     stream.write(chunk.astype(numpy.float32).tostring())
 
 def save(markov):
+    print("Saving file...")
     numpy.save("./matrices/markov", markov)
 
 def load(filename):
-    return numpy.load("./matrices/markov.txt.npy")
+    print("Loading file: " + filename)
+    return numpy.load(filename)
 
 def get_state(order_array, note_num):
 
@@ -72,9 +77,6 @@ def get_state(order_array, note_num):
 
     
 def play_stream(markov):
-
-    print("Saving file...")
-    save(markov)
 
     size, note_num = markov.shape
     order = int(math.log(size, note_num))
@@ -104,7 +106,14 @@ def test_notes():
 
 
 #test_notes()            
-markov = create_markov()
+#markov = create_markov()
+
+args = sys.argv
+if len(args) >= 2:
+    markov  = load(args[1])
+else:
+    markov = create_markov()
+    save(markov)
 play_stream(markov)
 
 

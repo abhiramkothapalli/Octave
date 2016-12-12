@@ -7,9 +7,8 @@ from fitness import *
 
 #constructs a random order o transition matrix
 def constructor():
-    a = (10 * np.random.rand(size ** order, size)) ** 3
+    a = (10 * np.random.rand(size ** order, size)) ** 2
     #a = np.random.rand(size ** order, size)
-
 
     '''
     a = np.zeros((size ** order, size))
@@ -20,8 +19,6 @@ def constructor():
             a[i][r] = random.uniform(0, 1)
     '''
                 
-                
-    
     return a / a.sum(axis=1)[:, np.newaxis]
 
 def crossover(a, b):
@@ -46,10 +43,23 @@ def mutate(a):
     return a / a.sum(axis=1)[:, np.newaxis]
 
 def fitness(a):
-    return long_notes(a) * 0.25 + descension(a) + ascension(a)
+
+    total = 0
+
+    total += jump(a)
+    #total += reverse_descension(a)
+    #total += reverse_ascension(a)
+    #total += long_notes(a)
+    total += descension(a)
+    total += ascension(a)
+    total += less_pause(a)
+    #total += more_pause(a)
+    #total += rand(a)
+
+    return total
     
 #parameters
-size = 6#11
+size = 9
 order = 1
 mutation_prob = 0.1
 N = 1000
