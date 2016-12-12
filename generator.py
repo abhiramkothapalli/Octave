@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 import random
+import numpy as np
+import matplotlib.pyplot as plt
 
 #generates our first set of candidates
 def initalize(constructor, N):
@@ -45,6 +47,17 @@ def iterate(generation, N, mutate, crossover, fitness, exclusivity):
 def selector(generation, fitness, exclusivity):
     return sorted(generation, key=fitness)[int(len(generation) * (1 - exclusivity)):]
 
+
+
+
+def graph(fit_array):
+    plt.figure()
+    plt.plot(np.arange(0, len(fit_array)), fit_array)
+    plt.xlabel("Generation")
+    plt.xlabel("Fitness")
+    plt.title("Matrix Fitness over Time N=1000, mutation_prob=0.01, exclusivity=0.01")
+    plt.show()
+
 #runs our genetic algorithm
 #constructor(): returns an element of a generation
 #crossover(a, b): mixes the result of a and b
@@ -54,9 +67,16 @@ def selector(generation, fitness, exclusivity):
 #K: total number of iterations
 #exclusivity: proportion of population selected to be candidate pool
 def generate(constructor, crossover, mutate, fitness, N, K, exclusivity):
+    fit_array = []
     generation = initalize(constructor, N)
-    print("Seed Generation Fitness: "+ str(max([fitness(x) for x in generation])))
+    fit = max([fitness(x) for x in generation])
+    print("Seed Generation Fitness: "+ str(fit))
+    fit_array.append(fit)
     for i in range(K):
         generation = iterate(generation, N, mutate, crossover, fitness, exclusivity)
-        print("Generation " + str(i + 1) + "/" + str(K)  + " Fitness: "+ str(max([fitness(x) for x in generation])))
+        fit = max([fitness(x) for x in generation])
+        fit_array.append(fit)
+        print("Generation " + str(i + 1) + "/" + str(K)  + " Fitness: "+ str(fit))
+
+    #graph(fit_array)
     return sorted(generation, key=fitness)[-1]

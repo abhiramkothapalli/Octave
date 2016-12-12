@@ -49,9 +49,9 @@ def fitness(a):
     total += jump(a)
     #total += reverse_descension(a)
     #total += reverse_ascension(a)
-    total += long_notes(a)
-    #total += descension(a)
-    #total += ascension(a) * 2
+    #total += long_notes(a)
+    total += descension(a)
+    total += ascension(a)
     #total += less_pause(a)
     #total += more_pause(a)
     #total += rand(a)
@@ -59,11 +59,11 @@ def fitness(a):
     return total
     
 #parameters
-size = 7
+size = 9
 order = 1
-mutation_prob = 0.1
+mutation_prob = 0.01
 N = 1000
-K = 35
+K = 50
 exclusivity = 0.01
 
 def create_markov():

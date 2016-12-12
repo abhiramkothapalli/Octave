@@ -23,9 +23,8 @@ notes[7] = 520.00 #523.25 #C
 notes[8] = 0.00 #pause
 
 
-
 #pentatonic scale
-
+'''
 notes[0] = 260.00#C
 notes[1] = 330.00#E
 notes[2] = 370.00#F#
@@ -33,7 +32,7 @@ notes[3] = 390.00#G
 notes[4] = 490.00#B
 notes[5] = 520.00#C
 notes[6] = 0.00 #pause
-
+'''
 '''
 notes[6] = 660.00#E
 notes[7] = 740.00#F#
