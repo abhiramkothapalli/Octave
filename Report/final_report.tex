@@ -1,7 +1,10 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
 
-\title{Generative Music using Genetic Algorithms and Markov Matrices}
+\title{Octave: A Generative Music Engine using Genetic Algorithms and Markov Matrices}
 \author{Abhiram Kothapalli}
 \date{}
 
@@ -9,26 +12,113 @@
 
 \maketitle
 
+\begin{abstract}
+
+\end{abstract}
+
 \section{Introduction}
 
-\subsection{Related Work}
+\subsection{Previous Works}
 
-\section{Problem Definition and Algorithm}
+\subsection{Contribution}
 
-\subsection{Task Definition}
-\subsection{Algorithm Definition}
-\subsection{Expectations}
+We are the first to produce a novel combination of previous algorithms by evolving Markov matrices using genetic algorithms. Additionally this work continues to build upon the notion of a robust fitness function using simple musical guidelines. Additionally unlike previous works we aim to create an algorithm that is computationally simple to allow music to be generated cheaply.
 
-\section{Experimental Evaluation}
+\section{The Generative Algorithm}
+
+The music composition algorithm works by genetically evolving Markov matrices that represent note transition probabilities.
+
+\subsection{Markov Matrix Population Element}
+
+The generative algorithm uses order 1 Markov matrices to represent note transition probabilities. Each row represents the previous note and the elements of that row represent probability distribution for the next note conditioned on the previous note. We also include a row and column to represent a pause. We can simulate the progression of notes using these probabilities to create a musical piece. Unlike standard genetic algorithms which evolve fixed segments of notes, this model allows us to define and evolve infinitely long musical pieces.
+
+\paragraph{Order N Markov Matrices} We additionally explore the possibility of order N Markov matrices. In this context an N Order matrix represents the probability distribution conditioned on the last N notes. However an order $N$ Markov matrix requires $N^2$ rows making it computationally infeasible outside of some trivial $N$.
+
+\subsection{Genetic Evolution Algorithm}
+
+A genetic algorithm functions by repeatedly taking a population of candidates, selecting a subset of the population using some fitness function, and finally performing genetic operations such as crossover and mutate to create a new population. This process can be summarized as below:
+
+\begin{enumerate}
+\item Initalize: Randomly create a population by generating $N$ candidates
+\item Select: Select an optimal subset of population $P_k$ by picking $S \subset P_k$ based on some fitness function $f(P_{ki})$
+\item Genetic Operations
+  \begin{enumerate}
+  \item Crossover: Pick two elements $s_1, s_2 \in S$ such that elements with higher fitness have a higher probability of being picked. Merge these elements using some function $crossover(s_1, s_2)$ and place the output element in population $P_{k + 1}$.
+  \item Mutate: Modify element $s \in P_{k + 1}$ with a small probability $\gamma$
+  \end{enumerate}
+\item Iterate: Continue iterating the population by repeating steps 2 and 3 until the population fitness converges.
+\end{enumerate}
+
+We redefine the genetic operations and fitness function to fit the constraints of Markov matrices as population elements.
+
+\subsubsection{Genetic Operations on Matrices}
+
+\paragraph{Crossover} While there are several approaches to merging two Markov matrices, We chose to merge $s_1$ and $s_2$ by picking a random split point, $j$, among the rows and copying rows above $j$ from $s_1$ and rows $j$ and below from $s_2$. Intuitively this means that we inherit the probability distributions for some notes from parent 1 and the distributions for the remaining notes from parent 2.
+
+\begin{algorithm}[H]
+  \caption{Crossover}
+  \begin{algorithmic}
+    \State Initalize randomly selected split point, j
+    \State Initalize parents $s_1, s_2$
+    \While{i $<$ number of rows}
+    \If {$i < j$}
+    \State $child_i \gets s_{1i}$
+    \EndIf
+    \If{$i \geq j$}
+    \State $child_i \gets s_{2i}$
+    \EndIf
+    \State $i \gets i + 1$
+    \EndWhile
+    \State Return child  
+  \end{algorithmic}
+\end{algorithm}
+
+
+\paragraph{Mutation} There are also several options for mutating matrices. We simply modify an element in the matrix with some set mutation probability, $\gamma$.
+
+\begin{algorithm}[H]
+  \caption{Mutation}
+  \begin{algorithmic}
+    \State Assume some $\gamma$ has been set
+
+    \While{i $<$ number of rows}
+    \While{j $<$ number of columns}
+    \If{Probability $\gamma$ is satisfied}
+    \State $matrix[i][j] \gets $ random new probability
+    \EndIf
+    \EndWhile
+    \EndWhile
+  \end{algorithmic}
+\end{algorithm}
+
+
+
+\subsubsection{Fitness Function on Matrices}
+
+As with any genetic algorithm the fitness function is crucial to creating Markov matrices that represent satisfying music. In fact, creating an effective fitness function to judge musical compositions is an active area in research. In an attempt to preserve creativity and allow a wide variety of results, we aimed to create a simple yet effective fitness function. A simple fitness function essentially needs to capture and judge adherence to the fundamental rules of pleasing music. To achieve this end, we identify several key characteristics of pleasing music:
+
+\begin{enumerate}
+\item Ascending and descending note sequences
+\item Occasional pauses
+\item A balance between long and short notes
+\item Unexpected jumps and variations
+\end{enumerate}
+
+Implementing these rules individually is easy. We can just give larger fitness scores to matrices that have transition probabilities adhering to these sorts of rules. However these rules when used individually as fitness functions lead to uninteresting and repetitive melodies, due to their simplicity. We can create more interesting rules by creating a new fitness score resulting in a weighted linear combination of simpler fitness scores. For example a more robust fitness function can value frequent pauses and unexpected jumps placing a higher emphasis on the latter.  This allows us to keep the overall simplicity of assessing the fitness of our matrices while still producing interesting compositions. If we have simplistic fitness functions $f_1, f_2, f_3, ..., f_k$ and weights $w_1, w_2, w_3, ..., w_k$ for these fitness functions, our robust fitness function, $f_r$, can be summarized with the following representation.
+
+\[
+f_r(m) = \sum_{i = 1}^k{w_i * f_i (m)}
+\]
+
+\section{Implementation and Evaluation}
 
 \subsection{Methodology}
 \subsection{Results}
 \subsection{Discussion}
 
-\section{Theorethical Evaluation}
-
 \section{Future Work}
 
 \section{Conclusion}
+
 
 \end{document}
