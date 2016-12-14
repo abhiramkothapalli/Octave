@@ -17,7 +17,7 @@
 \maketitle
 
 \begin{abstract}
-
+We propose a novel generative music algorithm by genetically evolving order 1 Markov matrices that represent note transition probabilites. In order to make Markov matrices a suitable population element for a genetic algorithm we define new definitions of the genetic operators crossover and mutate. Additionally we define a robust yet efficient fitness function by combining a series of simple fitness functions based on simple musical rules. We implement our algorithm to show that it can create interesting melodies in an very efficient manner. We analyze the effect of different genetic parameters on the quality of the final composition.
 \end{abstract}
 
 \section{Introduction}
@@ -119,9 +119,9 @@ We have created a working implementation of the proposed generative algorithm in
 
 \begin{enumerate}
 \item generator.py: Contains the genetic algorithm process. Takes in population element constructor, crossover, mutate and fitness function as an argument. Also takes in number of generations, number of elements per population and exclusivity function.
-\item markov.py: contains definitions for how to construct, crossover, and mutate a markov population element. Also contains the fitness function rule based on fitness.py
+\item markov.py: Contains definitions for how to construct, crossover, and mutate a markov population element. Also contains the fitness function rule based on fitness.py
 \item fitness.py: Contains various fitness functions that can be used and combined in markov.py
-playmarkov.py: generates a Markov matrix with specifications set in markov.py or takes an argument to an existing markov matrix. Plays the resulting Markov matrix.
+\item playmarkov.py: Generates a Markov matrix with specifications set in markov.py or takes an argument to an existing markov matrix. Plays the resulting Markov matrix.
 \end{enumerate}
 
 The projects source code and supporting files can be found at the following links. We can subjectively assess of the success of the proposed algorithm by listening to the provided sound samples.
@@ -160,7 +160,7 @@ As seen in the figures above a reasonably small mutation probability converges m
 \begin{minipage}{.5\textwidth}
   \centering
   \includegraphics[width=1\linewidth]{../graphs/population1.png}
-  \captionof{figure}{Mutation Probability 1000}
+  \captionof{figure}{N = 1000}
 \end{minipage}%
 \begin{minipage}{.5\textwidth}
   \centering
@@ -173,7 +173,12 @@ Upon close inspection we can tell that a population size of 10000 converges fast
 
 \section{Future Work}
 
+Perhaps the most critical area of development is to create a stronger more robust fitness function. We could potentially use the same generative algorithm but experiment with an entirely new class of fitness function, perhaps one that attempts to follow the patterns from input examples. We can also use our genetic algorithm algorithm on any sort of population element so long as it is simple enough. In the fuure we can implement neural networks or decision trees as our population element so long as we can create reasonable genetic operations and fitness functions. We hope to refine this algorithm until musicians can start defining their own intuitive fitness functions and incorporate the output in their work.
+
 \section{Conclusion}
+
+In summary, we create a novel musical composition algorithm by genetically evolving Markov matrices. Because Markov matrices only contain the note transition probabilities we can train on and optimize infinite sequences of notes. In order to make Markov matrices compatible with a population element we define new genetic operators, crossover and mutate. Additionally we define a robust yet efficient fitness function by combining a series of simple fitness functions. This proved to be efficient but still capible of creating interesting melodies. We implement the discussed algorithm to prove that it can, in fact, create interesting melodies and to analyze the effects of different genetic parameters.
+
 
 \bibliographystyle{plain}
 \bibliography{final_report}
