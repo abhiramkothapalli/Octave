@@ -55,7 +55,7 @@ def graph(fit_array):
     plt.plot(np.arange(0, len(fit_array)), fit_array)
     plt.xlabel("Generation")
     plt.xlabel("Fitness")
-    plt.title("Matrix Fitness over Time N=1000, mutation_prob=0.01, exclusivity=0.01")
+    plt.title("Matrix Fitness over Time N=10000, mutation_prob=0.01, exclusivity=0.01")
     plt.show()
 
 #runs our genetic algorithm
@@ -78,5 +78,5 @@ def generate(constructor, crossover, mutate, fitness, N, K, exclusivity):
         fit_array.append(fit)
         print("Generation " + str(i + 1) + "/" + str(K)  + " Fitness: "+ str(fit))
 
-    #graph(fit_array)
+    graph(fit_array)
     return sorted(generation, key=fitness)[-1]

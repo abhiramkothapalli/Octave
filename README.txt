@@ -1,4 +1,4 @@
-Generative music using genetic algorithms
+Octave: A Generative Music Engine using Genetic Algorithms and Markov Matrices
 
 This repository contains the source code, sound samples, and the report.
 

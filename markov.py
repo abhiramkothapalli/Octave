@@ -62,8 +62,8 @@ def fitness(a):
 size = 9
 order = 1
 mutation_prob = 0.01
-N = 1000
-K = 50
+N = 10000
+K = 30
 exclusivity = 0.01
 
 def create_markov():
@@ -72,5 +72,6 @@ def create_markov():
     print("Finished evolution, playing composition...")
     print(markov)
     return markov
+
 
 
